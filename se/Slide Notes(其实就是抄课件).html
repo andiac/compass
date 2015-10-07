@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- common.css -->
+  <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: Arial, Helvetica, sans-serif;margin: 0;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 85%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+  <!-- ace-static.css -->
+  <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+  <style>.ace-chrome .ace_gutter {background: #ebebeb;color: #333;overflow : hidden;}.ace-chrome .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-chrome {background-color: #FFFFFF;color: black;}.ace-chrome .ace_cursor {color: black;}.ace-chrome .ace_invisible {color: rgb(191, 191, 191);}.ace-chrome .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-chrome .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-chrome .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-chrome .ace_invalid {background-color: rgb(153, 0, 0);color: white;}.ace-chrome .ace_fold {}.ace-chrome .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-chrome .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-chrome .ace_support.ace_type,.ace-chrome .ace_support.ace_class.ace-chrome .ace_support.ace_other {color: rgb(109, 121, 222);}.ace-chrome .ace_variable.ace_parameter {font-style:italic;color:#FD971F;}.ace-chrome .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-chrome .ace_comment {color: #236e24;}.ace-chrome .ace_comment.ace_doc {color: #236e24;}.ace-chrome .ace_comment.ace_doc.ace_tag {color: #236e24;}.ace-chrome .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-chrome .ace_variable {color: rgb(49, 132, 149);}.ace-chrome .ace_xml-pe {color: rgb(104, 104, 91);}.ace-chrome .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-chrome .ace_heading {color: rgb(12, 7, 255);}.ace-chrome .ace_list {color:rgb(185, 6, 144);}.ace-chrome .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-chrome .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-chrome .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-chrome .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-chrome .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-chrome .ace_gutter-active-line {background-color : #dcdcdc;}.ace-chrome .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-chrome .ace_storage,.ace-chrome .ace_keyword,.ace-chrome .ace_meta.ace_tag {color: rgb(147, 15, 128);}.ace-chrome .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-chrome .ace_string {color: #1A1AA6;}.ace-chrome .ace_entity.ace_other.ace_attribute-name {color: #994409;}.ace-chrome .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}</style>
+  <!-- export.css -->
+  <style>
+    body{margin:0 auto;max-width:800px;line-height:1.4}
+    #nav{margin:5px 0 10px;font-size:15px}
+    #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+    #contentarea{font-size:15px;margin:16px 0}
+    .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+    .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+    .latex-cell{white-space:pre-wrap;}
+  </style>
+  <!-- User CSS -->
+  <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+</head>
+<body>
+  <div id="nav"><div>Next: <a href='Word List.html'>Word List</a>, Previous: <a href='Mock vs Stub(这个比较言简意赅吧).html'>Mock vs Stub(这个比较言简意赅吧)</a>, Up: <a href='index.html'>Index</a></div></div>
+  <div id="titlearea">
+    <h2>Slide Notes(其实就是抄课件)</h2>
+  </div>
+  <div id="contentarea"><div class="cell markdown-cell"><h2 id="week-1-introduction">Week 1 Introduction</h2>
+<h3 id="greenfield-vs-brownfield-development">Greenfield vs Brownfield Development</h3>
+<ul>
+<li>Greenfiled development<ul>
+<li>Creating a software system from scratch</li></ul>
+</li><li>Brownfield development<ul>
+<li>Adding functionality to an existing(network of) computer systems</li><li>Fixing bugs</li><li>Adding small features</li><li>Adding whole sub-systems or systems </li></ul>
+</li></ul>
+<h2 id="week-2-building-and-testing-open-source-software">Week 2 Building and Testing Open Source Software</h2>
+<h3 id="build-automation">Build Automation</h3>
+<ul>
+<li>All this points to the need for the build process to be automated</li><li>Build automation tools:<ul>
+<li>Maven, Ant, Gradle, make, Rake, MSBuild, NAnt, ...</li></ul>
+</li><li>Aim: make build:<ul>
+<li>Painless to initiate</li><li>Completely repeatable</li><li>Quick!</li></ul>
+</li></ul>
+<h3 id="run-the-tests">Run the tests</h3>
+<ul>
+<li>Release pipeline gateways:<ul>
+<li>Code review</li><li>Coding standards/documentation procedures</li><li>Automated tests</li></ul>
+</li></ul>
+<h3 id="link-to-the-exam">Link to the Exam</h3>
+<p>Could be questions on any aspect of the build and test process.</p>
+<h2 id="week-3-code-comprehension">Week 3 Code comprehension</h2>
+<h3 id="learning-unfamiliar-codebases">Learning Unfamiliar Codebases</h3>
+<h4 id="code-reading">Code reading</h4>
+<ul>
+<li>Goal: build a mental model of the codebase by acquiring<ul>
+<li>Application domain knowledge</li><li>General programming knowledge</li></ul>
+</li><li>Use systematic reading strategies<ul>
+<li>Top-down</li><li>Bottom-up</li></ul>
+</li><li>Tip: assume previous coders were sensible and honest</li></ul>
+<h4 id="comprehending-marauroa">Comprehending Marauroa</h4>
+<p>Omitted</p>
+<h4 id="learning-unfamiliar-codebases">Learning unfamiliar codebases</h4>
+<ul>
+<li>Acquire knowledge gradually through the top-down reading strategy</li><li>Packages and classes are hierarchical</li><li>Location is indicator of relevance</li><li>Extract meaning from names</li><li>Open files and skim</li><li>Use different sources</li><li>Don't read everything</li><li>Trust the previous developer</li></ul>
+<h3 id="unit-testing-overview">Unit testing overview</h3>
+<h4 id="unit-testing-what-why-when-">Unit testing: what, why &amp; when?</h4>
+<ul>
+<li>Replicating problems is key to bug fixing</li><li>However, Marauroa is a game engine, even if we build a toy game it could take ages to replicate bug</li><li>Unit testing is an elegant and maintainable way of executing pieces of code</li><li>Test-driven development lifecycle: test-&gt;implement-&gt;refactor</li></ul>
+<h4 id="unit-testing-terminology">Unit testing: terminology</h4>
+<ul>
+<li>terminology<ul>
+<li>test fixture</li><li>code under test</li><li>unit test</li><li>test coverage</li><li>integration test</li></ul>
+</li><li>Organization<ul>
+<li>Where deploy tests?</li><li>Which part of the code to test?</li></ul>
+</li></ul>
+<h4 id="junit-annotations">JUnit annotations</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Annotation</th>
+<th style="text-align:left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">@Test</td>
+<td style="text-align:left">in dicates the method as a test method</td>
+</tr>
+<tr>
+<td style="text-align:left">@Before</td>
+<td style="text-align:left">to execute a method before a test</td>
+</tr>
+<tr>
+<td style="text-align:left">@BeforeClass</td>
+<td style="text-align:left">to execute a method before all tests</td>
+</tr>
+<tr>
+<td style="text-align:left">@After</td>
+<td style="text-align:left">to execute a method after a test</td>
+</tr>
+<tr>
+<td style="text-align:left">@AfterClass</td>
+<td style="text-align:left">to execute a method after all test</td>
+</tr>
+</tbody>
+</table>
+<h4 id="junit-statements">JUnit statements</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Statement</th>
+<th style="text-align:left">Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">assertTure(String message, boolean condition)</td>
+<td style="text-align:left">Checks that the boolean condition is true</td>
+</tr>
+<tr>
+<td style="text-align:left">assertFalse(String message, boolean condition)</td>
+<td style="text-align:left">Checks that the boolean condition is false</td>
+</tr>
+<tr>
+<td style="text-align:left">assertEquals(String message, expected, actual)</td>
+<td style="text-align:left">Tests that two values are the same</td>
+</tr>
+<tr>
+<td style="text-align:left">assertNull(String message, object)</td>
+<td style="text-align:left">Checks that the object is null</td>
+</tr>
+<tr>
+<td style="text-align:left">assertNotNull(String message, object)</td>
+<td style="text-align:left">Checks that the object is not null</td>
+</tr>
+</tbody>
+</table>
+<h3 id="unit-test-reading-writing">Unit test reading &amp; writing</h3>
+<h4 id="what-can-we-learn-from-unit-test-reading-">What can we learn from unit test reading?</h4>
+<ul>
+<li>Unit test indicate trace of <ul>
+<li>Critical and key pieces of code</li><li>Tricky parts of the code</li><li>Sensitive excerpts</li><li>Bugs that were repaired in the past</li></ul>
+</li><li>Marauroa has a dedicated package with tests</li><li>Check marauroa.common.RPObjectTest.java</li><li>What can we learn about the class being tested?<ul>
+<li>Start reading the method under the @Before clause</li><li>How is it structured and which are its dependencies?</li><li>Which is the main data structure?</li></ul>
+</li></ul>
+<h4 id="testing-worlds-zones-and-objects">Testing worlds, zones and objects</h4>
+<p>就是个课上老师带着做的练习，不清楚考不考啊，如果觉得有必要自己稍微过一下源码吧</p>
+<ul>
+<li>There is one world which can contain N zones and zones contain objects</li><li>Find the classes in Marauroa<ul>
+<li>Object: marauroa.common.game.RPObject</li><li>Zone: marauroa.server.game.rp.MarauroaRPZone</li><li>World: marauroa.server.game.rp.RPWorld</li></ul>
+</li><li>Let's test whether<ol>
+<li>There is only one instance of World</li><li>If Zones are actually added to Worlds</li><li>If Objects are actually added to Zones</li><li>If Objects are destroyed when removed from Zones</li></ol>
+</li></ul>
+<ol>
+<li>Test there is only one instance of World<ol>
+<li>Get two instances of World </li><li>Use a JUnit a statement to compare the two instances</li></ol>
+</li><li>Test if Zones are actually added to Worlds<ol>
+<li>Get an instance of the world</li><li>Create a new Zone</li><li>Add the new Zone to the World</li><li>Use a method from the World class to check if our Zone belongs to the World</li><li>Use a JUnit a statement to check the above</li></ol>
+</li><li>Test Objects are actually added to Zones<ol>
+<li>Create a Zone and create an Object</li><li>Set an identifier to the Object</li><li>Add the object to Zone</li><li>Use a method from the Zone class to check if our Object belongs to the Zone</li><li>Use a JUnit a statement to check the above</li></ol>
+</li><li>Test Objects are destroyed once they are removed<ol>
+<li>Same as above until step e</li><li>Remove object from zone</li><li>Use a method rom the Zone class to check if our Object belongs to the Zone. Use JUnit.</li></ol>
+</li></ol>
+<h2 id="week4-git-workflows-and-code-reviews">Week4 Git workflows and Code reviews</h2>
+<h3 id="git-workflows">Git workflows</h3>
+<p><img src="resources/D28F46654CD788D9C8E29A04BF1BF2F2.png" alt="git.png"></p>
+<h4 id="basic-git">Basic Git</h4>
+<p>Git is a distributed version control system</p>
+<p>The life cycle of a file under git's control:</p>
+<p><img src="resources/9B11D24BD2F2565607BFA6576B86537A.png" alt="git2.png"><br><img src="resources/0EAD591E18C5059F1B159F8435E91DE2.png" alt="git1.png"></p>
+<p>Basic git commands and their interaction with various repositories:</p>
+<p><img src="resources/B3BB81FE01DA697059CF4EF438C64E9F.png" alt="git3.png"></p>
+<h4 id="git-commit">Git Commit</h4>
+<ul>
+<li>A commit should represent one conceptual change to your work<ul>
+<li>Expressed in one sentence</li><li>One commit per bug</li></ul>
+</li><li>Do commit frequently</li><li>Do not comit unfinished things</li><li>Write meaningful messages</li></ul>
+<p><img src="resources/9776201E29E59D98CE76CA482E5BF89F.png" alt="git4.png"></p>
+<h4 id="git-branching">Git Branching</h4>
+<ul>
+<li>Branches are used to develop freatures isolated from each other.</li><li>The master branch is the "default" branch when you create a repository</li><li>Use other branches for development and merge them back to the master branch upon completion.</li></ul>
+<h4 id="git-workflows">Git workflows</h4>
+<ul>
+<li>Branching allows a wide variety of strategies</li><li>This flexibility can result in complex, intertwined and messy ways of developing code</li><li>Using Git stops being efficient</li><li>A 'code of conduct' or protocal or conventions are needed</li><li>Patterns for Git use: Git workflows</li></ul>
+<h4 id="git-workflows-2-">Git workflows(2)</h4>
+<p>The GitFlow model:</p>
+<p><img src="resources/513700984AE561C2A0021AA6A2CAC112.png" alt="git5.png"></p>
+<ul>
+<li>Two main branches<ul>
+<li>Master: production code</li><li>Develop: latest development</li></ul>
+</li><li>Supporting branches<ul>
+<li>Feature branches</li><li>Hotfix branches</li><li>Release branch</li></ul>
+</li><li>Positive aspects<ul>
+<li>Popular workflow</li></ul>
+</li><li>Negative aspects<ul>
+<li>Still complex!</li></ul>
+</li></ul>
+<h4 id="git-workflows-3-">Git workflows(3)</h4>
+<ul>
+<li>The GitHub Flow model as a reaction<ul>
+<li>Master branch</li><li>Feature branches</li></ul>
+</li><li>GitHub Flow assumes you are able to deploy every time you merge a feature branch</li><li>Simplification and reduction of branch types</li><li>GitLab Flow simplifies this even more</li><li>Confusion: different repository managers use different terminology for merging!<ul>
+<li>Gitlab and Gitorious: merge request</li><li>GitHub and BitBucket: pull request</li></ul>
+</li></ul>
+<h3 id="code-reviews">Code reviews</h3>
+<ul>
+<li>Having the coder reviewed by somebody else is good</li><li>It can be done in several ways:<ul>
+<li>Formal meeting with a projector and code is checked line by line</li><li>'Over the shoulder'</li><li>Email</li><li>Pair programming</li><li>Tool based</li></ul>
+</li><li>It improves the quality, readability and maintain ability of software</li><li>It has an average of 60% of defect removal rate (even 85%) vs. 25% of unit testing</li></ul>
+<h4 id="code-review-what-to-report">Code review: what to report</h4>
+<ul>
+<li>Code review rates should be between 200 and 400 lines of code per hour</li><li>What sort of issues?<ul>
+<li>Design issues</li><li>Possible errors</li><li>Coding style issues</li><li>Testing issues</li><li>Rewards: positive comments</li></ul>
+</li><li>How to do the reviews?<ul>
+<li>Be nice</li><li>Be constructive (somebody else will look at yours!)</li></ul>
+</li><li>It's good for your own soft skills</li></ul>
+<h4 id="code-reviews-in-the-gitlab-workflows">Code reviews in the GitLab workflows</h4>
+<ul>
+<li>GitLab provides a online platform to discuss the code</li><li>Code reviews on merge requests<ol>
+<li>Assign the request to somebody else</li><li>This person will verify(through code reviews)<ol>
+<li>If happy with request they accept the merge</li><li>If not they may require further work</li></ol>
+</li></ol>
+</li></ul>
+<h2 id="week5-cost-estimation-and-planning">Week5 Cost Estimation and Planning</h2>
+<h3 id="cost-estimation">Cost Estimation</h3>
+<h4 id="definition">Definition</h4>
+<p>Cost estimation: Estimating the effort, resources and schedule for software projects.</p>
+<h4 id="building-a-plane-">Building a plane!!!!!!!!!!!!!!!!!!!!!!!!</h4>
+<p>omitted.................</p>
+<h3 id="things-that-make-estimating-hard">Things that make estimating hard</h3>
+<ul>
+<li>Process<ul>
+<li>Poor management</li><li>Which units should we use?</li><li>Deadlines</li><li>Bigger teams need more communication</li></ul>
+</li><li>Unknowns<ul>
+<li>Lack of experience</li><li>Unforeseen problems</li><li>Unfamiliar tools</li><li>Complexity</li><li>Variable quality of materials</li></ul>
+</li><li>External issues over which we have no control<ul>
+<li>Distractions</li><li>Relying on other people / services</li></ul>
+</li><li>Different opinions</li><li>Over optimism or pessimism</li></ul>
+<h3 id="things-that-can-help-you-estimate">Things that can help you estimate</h3>
+<ul>
+<li>Having a clear view of your objectives<ul>
+<li>Focused scope</li></ul>
+</li><li>Experience<ul>
+<li>Removing uncertainty</li><li>Shared experience</li><li>Familiarity with<ul>
+<li>Process</li><li>Team members</li><li>Tools</li><li>Resources</li><li>Code/application (estimating gets easier as project goes on)</li></ul>
+</li></ul>
+</li><li>Interest<ul>
+<li>Easier to estimate if you are engaged</li></ul>
+</li><li>Reuse of resources<ul>
+<li>Templates</li><li>Designs</li><li>Components</li></ul>
+</li><li>Honesty</li></ul>
+<h3 id="chaos-report-standish-group-">Chaos Report (Standish Group)</h3>
+<ul>
+<li>Successful projects:<ul>
+<li>Large companies 9%</li><li>Medium companies 16%</li><li>Small companies 28%</li></ul>
+</li><li>Cost overruns</li><li>Time overruns</li><li>Content deficiencies</li><li>Around half of IT Executives think there are more project failures now than there used to be.</li></ul>
+<h2 id="week-6-design-for-testability">Week 6 Design for Testability</h2>
+<h3 id="design-for-testability-">Design for Testability?</h3>
+<ul>
+<li>What is Design for Testability?<ul>
+<li>Making sure that we can test what we build</li></ul>
+</li><li>Why Design for Testability?<ul>
+<li>So that we can test what we build in isolation</li></ul>
+</li><li>What prevents testability<ul>
+<li>Complexity</li><li>Non-deterministic code (different every time)</li><li>Hard coding implementation in the wrong place</li><li>Not allowing inheritance</li><li>Breaking the Law of Demeter</li></ul>
+</li></ul>
+<h3 id="be-careful-of-new">Be careful of new</h3>
+<ul>
+<li>Avoid new unil you really have to use it<ul>
+<li>The most common form of hardcoding</li><li>Nails down the exact implementation of an object</li></ul>
+</li><li>Methods should only instantiate objects we don't want to substitute</li></ul>
+<h3 id="test-doubles-">Test doubles (测试替身这个翻译不错)</h3>
+<ul>
+<li>"Pretend" objects used in place of real objects for testing purposes</li><li>Dummy objects<ul>
+<li>Passed around but never actually used. Often used to fill parameter lists</li></ul>
+</li><li>Fake objects<ul>
+<li>Have working implementations. Usually take shortcuts which makes them unsuitable for use in production</li></ul>
+</li><li>Stubs<ul>
+<li>Provide canned answers to calls made during the test, sually not responding anything outside the test</li></ul>
+</li><li>Mocks<ul>
+<li>Pre-programmed with expectations which form a specification of the calls they are expected to receive</li></ul>
+</li></ul>
+<h3 id="mocks">Mocks</h3>
+<ul>
+<li>When "mocking" we create a special subclass of something to help us test something else</li><li>With this subclass (a mock) we can<ul>
+<li>Control certain aspects of a class's behavior<ul>
+<li>Fix return values</li></ul>
+</li><li>Verify that certain behaviours occur<ul>
+<li>Methods called the correct number of times</li></ul>
+</li></ul>
+</li></ul>
+<h2 id="week7-design-patterns-offensive-and-defensive-coding">Week7 Design Patterns, Offensive and Defensive Coding</h2>
+<h3 id="patterns">Patterns</h3>
+<ul>
+<li>Reusable solutions to recurring problems that occur during software development<ul>
+<li>Not necessarily the same code</li><li>Same structure</li></ul>
+</li><li>Can be used in discussions among programmers who know them<ul>
+<li>Know that we're talking about the same thing</li><li>More effectively collaborate</li></ul>
+</li><li>Mark Grand, "Patterns in Java"</li></ul>
+<h3 id="common-patterns-singleton-and-factory-">Common patterns: Singleton and Factory (这里课件上没啥内容，补充材料里至少要看第五章的这两个设计模式，至少)</h3>
+<ul>
+<li>Can you find any instances of the Singleton and Factory Method patterns in the Marauroa code?<ul>
+<li>Use Mark Grand Chapter 5 (in moodle) as a reference<ul>
+<li>Forces and Consequences</li></ul>
+</li><li>In which situations are they used?</li><li>Why?</li></ul>
+</li><li>Can you spot any problems with some uses of Singleton in the code?</li><li>How might use of the Factory pattern relate to testability?</li></ul>
+<h3 id="ui-patterns-">UI patterns(这里自己要补充么？)</h3>
+<p>omitted</p>
+<h3 id="coding-styles-defensive-programming">Coding styles: Defensive programming</h3>
+<ul>
+<li>A blanket term for various practices to increase code stability once it is in production</li><li>Pros<ul>
+<li>"Defend against the impossible, because the impossible will happen"</li><li>Systems will not fail, but try as hard as possible to continue<ul>
+<li>Even in the face of unexpected user input or actions</li></ul>
+</li><li>Aids maintenance<ul>
+<li>Higher quality code: readable and comprehensible</li></ul>
+</li></ul>
+</li><li>Cons<ul>
+<li>The impossible cannot happen so why defend against it?<ul>
+<li>New people join the team, new features, etc</li></ul>
+</li><li>Hurts maintenance<ul>
+<li>Hides bugs, bad for testability</li></ul>
+</li><li>Defensive coding often degenerates into paranoid programming</li></ul>
+</li></ul>
+<h3 id="a-note-on-assert">A note on assert</h3>
+<ul>
+<li>assert is used to verify the correctness of an invariant in the code</li><li>Should never trigger in production code<ul>
+<li>Turned off by default</li><li>Should be on during testing</li><li>Turn on with -ea option on the java command</li></ul>
+</li><li>Do not use assert to check public method parameters!<ul>
+<li>Use Exceptions</li></ul>
+</li><li>Do use assert to check post-conditions</li></ul>
+<h3 id="paranoid-programming-vs-testability">Paranoid programming vs testability</h3>
+<p>omitted (自己看图，不代表不重要)</p>
+<h3 id="code-styles-offensive-programming">Code styles: Offensive programming</h3>
+<ul>
+<li>"The best defence is a good offence" - Anon</li><li>Pros<ul>
+<li>Don't silently ignore errors, let them happen!</li><li>Force bugs to be detected and fixed as soon as possible</li><li>Simpler code(less error checking)</li><li>Errors shipped to the customer will be obvious<ul>
+<li>Easier to get management buy-in to fix them?</li><li>No results better than wrong results?</li></ul>
+</li><li>Cons<ul>
+<li>Errors shipped to the customer will be obvious<ul>
+<li>Low quality more obvious</li><li>Errors visible to everyone</li></ul>
+</li></ul>
+</li><li>More crashes<ul>
+<li>Real-time life-critical systems won't try to recover</li></ul>
+</li></ul>
+</li></ul>
+<h2 id="week8-refactoring-and-code-migration">Week8 Refactoring and code migration</h2>
+<h3 id="what-is-refactoring-">What is refactoring?</h3>
+<ul>
+<li>"Refactoring changes structure, not behaviour"</li><li>What do we mean by "behaviour"?<ul>
+<li>The function that is performed by the code</li><li>The interface that the code presents to the world<ul>
+<li>API</li><li>More obvious in object-oriented programming</li></ul>
+</li></ul>
+</li></ul>
+<h3 id="testing-and-refactoring">Testing and refactoring</h3>
+<ul>
+<li>"Refactoring changes structure, not behaviour"<ul>
+<li>Behaviour must be exactly the same after refactoring</li></ul>
+</li><li>Good tests are essential for refactoring<ul>
+<li>Must start and finish in known good state</li></ul>
+</li><li>Refactoring workflow:<ul>
+<li>Runtests (start from known good state)</li><li>Refactor</li><li>Run tests (finish in the same known good state)</li></ul>
+</li></ul>
+<h3 id="changing-interfaces-vs-refactoring">Changing interfaces vs refactoring</h3>
+<ul>
+<li>"What if I split a complex method up into smaller private methods?"<ul>
+<li>This is a refactor; the interface is not changed<ul>
+<li>Run tests to ensure they pass</li><li>Refactor</li><li>Re-run entire test suite to check for regressions</li></ul>
+</li></ul>
+</li><li>"What if I combine similar functionality from two private methods into a single one?"<ul>
+<li>This is a refactor; the interface is not changed<ul>
+<li>Run tests to ensure they pass</li><li>Refactor</li><li>Re-run entire test suite to check for regressions</li></ul>
+</li></ul>
+</li><li>"What if I am removing a public method, and no longer need the test?"<ul>
+<li>Not a refactor; you are changing the interface<ul>
+<li>Run tests to ensure they pass</li><li>Remove the test</li><li>Remove the method</li><li>Re-run entire test suite to check for regressions</li></ul>
+</li></ul>
+</li><li>"What if I am moving a public method between two classes?"<ul>
+<li>Not a refactor; you are changing the interface<ul>
+<li>Run tests to ensure they pass</li><li>Change the test so that it tests the code in its new location</li><li>Move the code to the new class</li><li>Re-run entire test suite to check for regressions</li></ul>
+</li></ul>
+</li></ul>
+<h3 id="how-do-i-know-when-to-refactor-">How do I know when to refactor?</h3>
+<ul>
+<li>Look out for<ul>
+<li>Complexity<ul>
+<li>Assignments, branches, calls (ABC)</li><li>Cyclometric complexity</li><li>Consider refactoring high scoring methods</li></ul>
+</li><li>Structural similarity<ul>
+<li>Consider refactoring similar code</li></ul>
+</li><li>Don't search by hand, use tools</li></ul>
+</li></ul>
+<h3 id="refactoring-with-your-ide">Refactoring with your IDE</h3>
+<p>Omitted</p>
+<h3 id="refactor-operations">Refactor operations</h3>
+<h4 id="simple-tasks">Simple tasks</h4>
+<ul>
+<li>Rename...; Move...<ul>
+<li>Fields, local variables, types, packages, etc</li></ul>
+</li><li>Changemethod signature...<ul>
+<li>Keep originalas delegate</li><li>Deprecate original</li></ul>
+</li><li>Encapsulate field...<ul>
+<li>Replaces all references to a field with getter and setter methods</li></ul>
+</li></ul>
+<h4 id="super-type-sub-type-operations">Super-type/sub-type operations</h4>
+<ul>
+<li>Use super-type where possible...<ul>
+<li>Replace occurrences of a type with one of its super-types where possible.</li></ul>
+</li><li>Pull up...<ul>
+<li>Move a field/method to a superclass</li><li>Declare the method abstract in the superclass<ul>
+<li>Methods only</li></ul>
+</li></ul>
+</li><li>Push down...<ul>
+<li>Move a set of methods and fields from a class to its subclasses</li></ul>
+</li></ul>
+<h4 id="extracting-structure">Extracting structure</h4>
+<ul>
+<li>Extract local variable<ul>
+<li>Creates a new variable assigned to the current selection</li><li>Replaces the selection with a reference to the new variable</li></ul>
+</li><li>Extract method<ul>
+<li>Creates a new method containing the current selection</li><li>Replaces the selection with a reference to the new method</li><li>Useful for refactoring lengthy, cluttered, or overly-complex methods</li></ul>
+</li><li>Extract superclass...<ul>
+<li>Extracts a common superclass from a set of sibling types</li><li>The selected sibling types become direct subclasses of the extracted superclass</li><li>Maybe re-run "Use super-type where possible..."</li></ul>
+</li><li>Extract interface...<ul>
+<li>Creates a new interface with a set of methods</li><li>Makes the selected class implement the interface</li></ul>
+</li></ul>
+<h2 id="week10-domain-specific-languages-dsl-">Week10 Domain Specific Languages (DSL)</h2>
+<h3 id="what-is-a-domain-">What is a domain?</h3>
+<ul>
+<li>Area of interest</li><li>Scientific specialty</li></ul>
+<ul>
+<li>Bounded</li><li>Overlapping</li></ul>
+<ul>
+<li>Examples<ul>
+<li>Computer Science<ul>
+<li>Software Engineering</li><li>Human Computer Interaction</li></ul>
+</li></ul>
+</li></ul>
+<h3 id="domain-specific-languages">Domain Specific Languages</h3>
+<ul>
+<li>Domain Specific Languages are very common<ul>
+<li>They underpin many key technologies</li></ul>
+</li><li>Also known as<ul>
+<li>Little languages</li><li>Minilanguages</li></ul>
+</li><li>Mostly textual<ul>
+<li>Ideally more natural looking than general code</li></ul>
+</li></ul>
+<h3 id="dsl-examples">DSL examples</h3>
+<ul>
+<li>Web<ul>
+<li>HTML, CSS, JavaScript, XSLT</li></ul>
+</li><li>Development tools<ul>
+<li>make, rake, ant, lex, yacc, Emacs Lisp</li></ul>
+</li><li>Databases<ul>
+<li>SQL, HQL, Object/Relational Mapping in general</li></ul>
+</li><li>Tyesetting utilities<ul>
+<li>TeX, LaTeX troff, groff, PostScript</li></ul>
+</li><li>Unix tools<ul>
+<li>sed, awk, bc, m4</li></ul>
+</li><li>Other<ul>
+<li>Regular expressions, Office macros, MATLAB</li></ul>
+</li></ul>
+<h3 id="dsls-vs-general-purpose-languages">DSLs vs general-purpose languages</h3>
+<ul>
+<li>Design goals contrast those of general languages</li><li>Less complex/comprehensive<ul>
+<li>Smaller syntex (fewer opportunities for bugs?)</li><li>Focussed on a particular domain</li></ul>
+</li><li>More expressive<ul>
+<li>Optimized for tasks within a domain</li></ul>
+</li><li>Both of the above mean a DSL in unlikely to be of general use outside their domain</li></ul>
+<h3 id="why-use-a-dsl-">Why use a DSL?</h3>
+<ul>
+<li>Allow domain experts to develop systems<ul>
+<li>Express solutions in the problem domain</li></ul>
+</li><li>Run time configurations of complex systems<ul>
+<li>Emacs, Stendhal</li></ul>
+</li><li>Simplified recipe scripts<ul>
+<li>Build systems, installers</li></ul>
+</li><li>Connect two or more different languages or services<ul>
+<li>ColdFusion Markup Language</li></ul>
+</li><li>Generate models and services in multiple languages<ul>
+<li>One source multiple targets(e.g. Ruby on Rails)</li></ul>
+</li></ul>
+<h3 id="dsl-implementation-styles">DSL implementation styles</h3>
+<ul>
+<li>Internal<ul>
+<li>Uses the syntax of a host language<ul>
+<li>Already have a parser and run time </li></ul>
+</li><li>Easier in flexible, low ceremony languages<ul>
+<li>Ruby, Groovy, Lisp</li></ul>
+</li></ul>
+</li><li>External<ul>
+<li>Custom syntax<ul>
+<li>Need to write code to parse and run it</li></ul>
+</li><li>Typical example: XML-style configuration files</li></ul>
+</li><li>Interpreted<ul>
+<li>Read the DSL script and execute it at run time<ul>
+<li>More natural in interpreted languages</li></ul>
+</li><li>Good for configuration at run time</li></ul>
+</li><li>Code generation<ul>
+<li>Read the DSL script and generate code<ul>
+<li>In a general purpose language<ul>
+<li>Often C, C++, Java</li></ul>
+</li><li>May then also need to be compiled</li></ul>
+</li><li>Not suitablefor run time configuration tasks</li></ul>
+</li></ul>
+</div></div>
+  <script>document.body.onkeyup = function(e) {
+if (e.keyCode === 39) window.location.href = 'Word List.html';
+if (e.keyCode === 37) window.location.href = 'Mock vs Stub(这个比较言简意赅吧).html';
+}</script>
+</body>
+</html>

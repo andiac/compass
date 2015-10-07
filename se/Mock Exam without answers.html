@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- common.css -->
+  <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: Arial, Helvetica, sans-serif;margin: 0;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 85%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+  <!-- ace-static.css -->
+  <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+  <style>.ace-chrome .ace_gutter {background: #ebebeb;color: #333;overflow : hidden;}.ace-chrome .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-chrome {background-color: #FFFFFF;color: black;}.ace-chrome .ace_cursor {color: black;}.ace-chrome .ace_invisible {color: rgb(191, 191, 191);}.ace-chrome .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-chrome .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-chrome .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-chrome .ace_invalid {background-color: rgb(153, 0, 0);color: white;}.ace-chrome .ace_fold {}.ace-chrome .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-chrome .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-chrome .ace_support.ace_type,.ace-chrome .ace_support.ace_class.ace-chrome .ace_support.ace_other {color: rgb(109, 121, 222);}.ace-chrome .ace_variable.ace_parameter {font-style:italic;color:#FD971F;}.ace-chrome .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-chrome .ace_comment {color: #236e24;}.ace-chrome .ace_comment.ace_doc {color: #236e24;}.ace-chrome .ace_comment.ace_doc.ace_tag {color: #236e24;}.ace-chrome .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-chrome .ace_variable {color: rgb(49, 132, 149);}.ace-chrome .ace_xml-pe {color: rgb(104, 104, 91);}.ace-chrome .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-chrome .ace_heading {color: rgb(12, 7, 255);}.ace-chrome .ace_list {color:rgb(185, 6, 144);}.ace-chrome .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-chrome .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-chrome .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-chrome .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-chrome .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-chrome .ace_gutter-active-line {background-color : #dcdcdc;}.ace-chrome .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-chrome .ace_storage,.ace-chrome .ace_keyword,.ace-chrome .ace_meta.ace_tag {color: rgb(147, 15, 128);}.ace-chrome .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-chrome .ace_string {color: #1A1AA6;}.ace-chrome .ace_entity.ace_other.ace_attribute-name {color: #994409;}.ace-chrome .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}</style>
+  <!-- export.css -->
+  <style>
+    body{margin:0 auto;max-width:800px;line-height:1.4}
+    #nav{margin:5px 0 10px;font-size:15px}
+    #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+    #contentarea{font-size:15px;margin:16px 0}
+    .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+    .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+    .latex-cell{white-space:pre-wrap;}
+  </style>
+  <!-- User CSS -->
+  <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+</head>
+<body>
+  <div id="nav"><div>Previous: <a href='Word List.html'>Word List</a>, Up: <a href='index.html'>Index</a></div></div>
+  <div id="titlearea">
+    <h2>Mock Exam without answers</h2>
+  </div>
+  <div id="contentarea"><div class="cell markdown-cell"><h3 id="question-1">Question 1</h3>
+<p>Which of the following statements describe a benefit of using automated build scripts:</p>
+<ul>
+<li>A. Automated build scripts make the build process repeatable and reliable.</li><li>B. Automated build scripts mean that only junior programmers need to build the system.</li><li>C. Automated build scripts remove the need for testing a code base.</li><li>D. Automated build scripts make it easy to correct syntax and other compilation errors in code soon after they are made.</li></ul>
+<h3 id="question-2">Question 2</h3>
+<p>For what purposes do you create branches on Git?</p>
+<ul>
+<li>A. To ensure continuity of the process</li><li>B. To keep tests and source code separate</li><li>C. To create new features and have different lines of development</li><li>D. None of the above</li></ul>
+<h3 id="question-3">Question 3</h3>
+<p>Which of the following is true of a good test?</p>
+<ul>
+<li>A. It produces the same result regardless of context</li><li>B. It tests for only one behaviour</li><li>C. It gives the same outcome every time it is run</li><li>D. All of the above</li></ul>
+<h3 id="question-4">Question 4</h3>
+<p>When is it appropriate to use a free text field in a mortgage application form?</p>
+<ul>
+<li>A. When entering the mortgage product required</li><li>B. When entering a first name</li><li>C. When entering a salutation (Dr., Mr., Ms., etc.)</li><li>D. All of the above</li></ul>
+<h3 id="question-5">Question 5</h3>
+<p>Which of the following are reasonable methods of estimating the effort required to complete a project?</p>
+<ul>
+<li>A. Considering past performance on similar projects</li><li>B. Considering past performance of the same team</li><li>C. Guessing</li><li>D. All of the above</li></ul>
+<h3 id="question-6">Question 6</h3>
+<p>Which of the following is the best unit of estimation?</p>
+<ul>
+<li>A. There is no single best unit of estimation</li><li>B. Function Points</li><li>C. Weeks</li><li>D. Money</li></ul>
+<h3 id="question-7">Question 7</h3>
+<p>Defensive Programming helps to ensure that:</p>
+<ul>
+<li>A. Source code is readable and comprehensible</li><li>B. Software has lower bug counts</li><li>C. Software behaves in a predictable manner despite unexpected user actions</li><li>D. All of above</li></ul>
+<h3 id="question-8">Question 8</h3>
+<p>Which of the following examples of test Doubles would you use to provide a predictable response when testing a method to produce random numbers?</p>
+<ul>
+<li>A. Stub</li><li>B. Fake</li><li>C. Dummy</li><li>D. Mock</li></ul>
+<h3 id="question-9">Question 9</h3>
+<p>The software architecture shown here is an example of which of the following architectural patterns:<br><img src="resources/5253A25D847C210993C5A195894C0760.png" alt="fig1.png"></p>
+<ul>
+<li>A. Client-server architecture</li><li>B. Multi-tiered architecture</li><li>C. Peer-to-peer architecture</li><li>D. Pipeline architecture</li></ul>
+<h3 id="question-10">Question 10</h3>
+<p>New government regulations on equipment safety are being introduced, and the system shown below must change to incorporate them.  The new regulations require that an additional piece of information must be captured from the HRM robots.  This information is already available for the factory robot. </p>
+<p>Which of the following answers describes the set of components in this architecture most likely to need to be changed as a result of these new requirements?</p>
+<p><img src="resources/98E0456E29B0BAE1EA38D8B97B17B32B.png" alt="fig2.png"></p>
+<ul>
+<li>A. Only the 'Equipment Safety Protocols Verification' component.</li><li>B. The 'Equipment Safety Protocols Verification' component, the 'Manufacturing Workflows Enactment' component, and the 'HRM Robot API'.</li><li>C. The 'Personnel Safety Protocols Verification' component, and all components below it in the architecture.</li><li>D. None of the components need to change.</li></ul>
+</div></div>
+  <script>document.body.onkeyup = function(e) {
+if (e.keyCode === 37) window.location.href = 'Word List.html';
+}</script>
+</body>
+</html>

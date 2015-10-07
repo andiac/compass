@@ -4,22 +4,22 @@ layout: base
 <div class="wrapper">
     <header>
         {% if site.compass.logo %}
-        <div class="logo-container">
-          <a class="logo" href="{{ page.baseurl }}" style="background-image: url('{{ site.baseurl }}{{ site.compass.logo }}')"></a>
+        <div class="logo-container" style="display: none;">
+          <a class="logo shake-chunk" href="{{ page.baseurl }}" style="background-image: url('{{ site.baseurl }}{{ site.compass.logo }}')"></a>
         </div>
         {% endif %}
 
         {% if site.compass.author %}
-        <div class="author-container"><h1>{{ site.compass.author }}</h1></div>
+        <div class="author-container"><h1><span class="author-name"></span><span class="author-name2"></span></h1></div>
         {% endif %}
 
         {% if site.compass.tagline %}
-        <div class="tagline-container"><p>{{ site.compass.tagline }}</p></div>
+        <div class="tagline-container"><p><span class="tagline"></span></p></div>
         {% endif %}
     </header>
     <main>
       {% if site.compass.include_content %}
-      <div class="content">
+      <div class="content" style="display: none;">
         {% include content.html %}
       </div>
       {% endif %}

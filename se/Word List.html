@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- common.css -->
+  <style>* {-webkit-tap-highlight-color: rgba(0,0,0,0);}html {-webkit-text-size-adjust: none;}body {font-family: Arial, Helvetica, sans-serif;margin: 0;color: #333;word-wrap: break-word;}h1, h2, h3, h4, h5, h6 {line-height: 1.1;}img {max-width: 100% !important;}blockquote {margin: 0;padding: 0 15px;color: #777;border-left: 4px solid #ddd;}hr {background-color: #ddd;border: 0;height: 1px;margin: 15px 0;}code {font-family: Menlo, Consolas, 'Ubuntu Mono', Monaco, 'source-code-pro', monospace;line-height: 1.4;margin: 0;padding: 0.2em 0;font-size: 85%;background-color: rgba(0,0,0,0.04);border-radius: 3px;}pre > code {margin: 0;padding: 0;font-size: 100%;word-break: normal;background: transparent;border: 0;}ol {list-style-type: decimal;}ol ol, ul ol {list-style-type: lower-latin;}ol ol ol, ul ol ol, ul ul ol, ol ul ol {list-style-type: lower-roman;}table {border-spacing: 0;border-collapse: collapse;margin-top: 0;margin-bottom: 16px;}table th {font-weight: bold;}table th, table td {padding: 6px 13px;border: 1px solid #ddd;}table tr {border-top: 1px solid #ccc;}table tr:nth-child(even) {background-color: #f8f8f8;}input[type="checkbox"] {cursor: default;margin-right: 0.5em;font-size: 13px;}.task-list-item {list-style-type: none;}.task-list-item+.task-list-item {margin-top: 3px;}.task-list-item input {float: left;margin: 0.3em 1em 0.25em -1.6em;vertical-align: middle;}#tag-field {margin: 8px 2px 10px;}#tag-field .tag {display: inline-block;background: #cadff3;border-radius: 4px;padding: 1px 8px;color: black;font-size: 12px;margin-right: 10px;line-height: 1.4;}</style>
+  <!-- ace-static.css -->
+  <style>.ace_static_highlight {white-space: pre-wrap;}.ace_static_highlight .ace_gutter {width: 2em;text-align: right;padding: 0 3px 0 0;margin-right: 3px;}.ace_static_highlight.ace_show_gutter .ace_line {padding-left: 2.6em;}.ace_static_highlight .ace_line {position: relative;}.ace_static_highlight .ace_gutter-cell {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;user-select: none;top: 0;bottom: 0;left: 0;position: absolute;}.ace_static_highlight .ace_gutter-cell:before {content: counter(ace_line, decimal);counter-increment: ace_line;}.ace_static_highlight {counter-reset: ace_line;}</style>
+  <style>.ace-chrome .ace_gutter {background: #ebebeb;color: #333;overflow : hidden;}.ace-chrome .ace_print-margin {width: 1px;background: #e8e8e8;}.ace-chrome {background-color: #FFFFFF;color: black;}.ace-chrome .ace_cursor {color: black;}.ace-chrome .ace_invisible {color: rgb(191, 191, 191);}.ace-chrome .ace_constant.ace_buildin {color: rgb(88, 72, 246);}.ace-chrome .ace_constant.ace_language {color: rgb(88, 92, 246);}.ace-chrome .ace_constant.ace_library {color: rgb(6, 150, 14);}.ace-chrome .ace_invalid {background-color: rgb(153, 0, 0);color: white;}.ace-chrome .ace_fold {}.ace-chrome .ace_support.ace_function {color: rgb(60, 76, 114);}.ace-chrome .ace_support.ace_constant {color: rgb(6, 150, 14);}.ace-chrome .ace_support.ace_type,.ace-chrome .ace_support.ace_class.ace-chrome .ace_support.ace_other {color: rgb(109, 121, 222);}.ace-chrome .ace_variable.ace_parameter {font-style:italic;color:#FD971F;}.ace-chrome .ace_keyword.ace_operator {color: rgb(104, 118, 135);}.ace-chrome .ace_comment {color: #236e24;}.ace-chrome .ace_comment.ace_doc {color: #236e24;}.ace-chrome .ace_comment.ace_doc.ace_tag {color: #236e24;}.ace-chrome .ace_constant.ace_numeric {color: rgb(0, 0, 205);}.ace-chrome .ace_variable {color: rgb(49, 132, 149);}.ace-chrome .ace_xml-pe {color: rgb(104, 104, 91);}.ace-chrome .ace_entity.ace_name.ace_function {color: #0000A2;}.ace-chrome .ace_heading {color: rgb(12, 7, 255);}.ace-chrome .ace_list {color:rgb(185, 6, 144);}.ace-chrome .ace_marker-layer .ace_selection {background: rgb(181, 213, 255);}.ace-chrome .ace_marker-layer .ace_step {background: rgb(252, 255, 0);}.ace-chrome .ace_marker-layer .ace_stack {background: rgb(164, 229, 101);}.ace-chrome .ace_marker-layer .ace_bracket {margin: -1px 0 0 -1px;border: 1px solid rgb(192, 192, 192);}.ace-chrome .ace_marker-layer .ace_active-line {background: rgba(0, 0, 0, 0.07);}.ace-chrome .ace_gutter-active-line {background-color : #dcdcdc;}.ace-chrome .ace_marker-layer .ace_selected-word {background: rgb(250, 250, 255);border: 1px solid rgb(200, 200, 250);}.ace-chrome .ace_storage,.ace-chrome .ace_keyword,.ace-chrome .ace_meta.ace_tag {color: rgb(147, 15, 128);}.ace-chrome .ace_string.ace_regex {color: rgb(255, 0, 0)}.ace-chrome .ace_string {color: #1A1AA6;}.ace-chrome .ace_entity.ace_other.ace_attribute-name {color: #994409;}.ace-chrome .ace_indent-guide {background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==") right repeat-y;}</style>
+  <!-- export.css -->
+  <style>
+    body{margin:0 auto;max-width:800px;line-height:1.4}
+    #nav{margin:5px 0 10px;font-size:15px}
+    #titlearea{border-bottom:1px solid #ccc;font-size:17px;padding:10px 0;}
+    #contentarea{font-size:15px;margin:16px 0}
+    .cell{outline:0;min-height:20px;margin:5px 0;padding:5px 0;}
+    .code-cell{font-family:Menlo,Consolas,'Ubuntu Mono',Monaco,'source-code-pro',monospace;font-size:12px;}
+    .latex-cell{white-space:pre-wrap;}
+  </style>
+  <!-- User CSS -->
+  <style> .text-cell {font-size: 15px;}.code-cell {font-size: 12px;}.markdown-cell {font-size: 15px;}.latex-cell {font-size: 15px;}</style>
+</head>
+<body>
+  <div id="nav"><div>Next: <a href='Mock Exam without answers.html'>Mock Exam without answers</a>, Previous: <a href='Slide Notes(其实就是抄课件).html'>Slide Notes(其实就是抄课件)</a>, Up: <a href='index.html'>Index</a></div></div>
+  <div id="titlearea">
+    <h2>Word List</h2>
+  </div>
+  <div id="contentarea"><div class="cell markdown-cell"><table>
+<thead>
+<tr>
+<th style="text-align:left">生词</th>
+<th style="text-align:left">释义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">comprehension</td>
+<td style="text-align:left">n. 理解；包含</td>
+</tr>
+<tr>
+<td style="text-align:left">synchronisation</td>
+<td style="text-align:left">n. 同步；同一时刻；同时发生</td>
+</tr>
+<tr>
+<td style="text-align:left">assurance</td>
+<td style="text-align:left">n. 保证，担保</td>
+</tr>
+<tr>
+<td style="text-align:left">lounge</td>
+<td style="text-align:left">vi. 闲逛；懒洋洋地躺卧；闲混</td>
+</tr>
+<tr>
+<td style="text-align:left">mortgage</td>
+<td style="text-align:left">vt. 抵押；n. 抵押</td>
+</tr>
+<tr>
+<td style="text-align:left">salutation</td>
+<td style="text-align:left">n. 称呼；问候；招呼；寒喧</td>
+</tr>
+<tr>
+<td style="text-align:left">reliable</td>
+<td style="text-align:left">adj. 可靠的；可信赖的</td>
+</tr>
+<tr>
+<td style="text-align:left">scratch</td>
+<td style="text-align:left">n. 擦伤；抓痕；刮擦声；乱写</td>
+</tr>
+<tr>
+<td style="text-align:left">deploy</td>
+<td style="text-align:left">vi. 部署；展开</td>
+</tr>
+<tr>
+<td style="text-align:left">gateway</td>
+<td style="text-align:left">n. 门；网关；方法；通道；途径</td>
+</tr>
+<tr>
+<td style="text-align:left">regulations</td>
+<td style="text-align:left">n. [管理] 条例；规程（regulation的复数）；章则</td>
+</tr>
+<tr>
+<td style="text-align:left">delegation</td>
+<td style="text-align:left">n. 代表团；授权；委托</td>
+</tr>
+<tr>
+<td style="text-align:left">extensively</td>
+<td style="text-align:left">adv. 广阔地；广大地</td>
+</tr>
+<tr>
+<td style="text-align:left">ubiquitos</td>
+<td style="text-align:left">adj. 普遍存在的；无所不在的</td>
+</tr>
+<tr>
+<td style="text-align:left">immutable</td>
+<td style="text-align:left">adj. 不变的；不可变的；不能变的</td>
+</tr>
+<tr>
+<td style="text-align:left">exponentially</td>
+<td style="text-align:left">adv. 以指数方式</td>
+</tr>
+<tr>
+<td style="text-align:left">skim</td>
+<td style="text-align:left">n. 撇；撇去的东西；表层物；瞒报所得的收入</td>
+</tr>
+<tr>
+<td style="text-align:left">replicating</td>
+<td style="text-align:left">adj. 复制的</td>
+</tr>
+<tr>
+<td style="text-align:left">fixture</td>
+<td style="text-align:left">n. 设备；固定装置；固定于某处不大可能移动之物</td>
+</tr>
+<tr>
+<td style="text-align:left">integration</td>
+<td style="text-align:left">n. 集成；综合</td>
+</tr>
+<tr>
+<td style="text-align:left">dedicated</td>
+<td style="text-align:left">adj. 专用的；专注的；献身的</td>
+</tr>
+<tr>
+<td style="text-align:left">excerpt</td>
+<td style="text-align:left">n. 摘由，节选（excerpt复数形式）</td>
+</tr>
+<tr>
+<td style="text-align:left">clause</td>
+<td style="text-align:left">n. 条款；[计] 子句</td>
+</tr>
+<tr>
+<td style="text-align:left">isolated</td>
+<td style="text-align:left">adj. 孤立的；分离的；单独的；[电] 绝缘的</td>
+</tr>
+<tr>
+<td style="text-align:left">conduct</td>
+<td style="text-align:left">n. 进行；行为；实施</td>
+</tr>
+<tr>
+<td style="text-align:left">intertwined</td>
+<td style="text-align:left">adj. 缠绕的；错综复杂的</td>
+</tr>
+<tr>
+<td style="text-align:left">gotcha</td>
+<td style="text-align:left">int. 明白了（等于got you）</td>
+</tr>
+<tr>
+<td style="text-align:left">substitute</td>
+<td style="text-align:left">n. 代用品；代替者</td>
+</tr>
+<tr>
+<td style="text-align:left">shortcut</td>
+<td style="text-align:left">n. 捷径；被切短的东西</td>
+</tr>
+<tr>
+<td style="text-align:left">mimic</td>
+<td style="text-align:left">vt. 模仿，摹拟</td>
+</tr>
+<tr>
+<td style="text-align:left">generic</td>
+<td style="text-align:left">adj. 类的；一般的；属的；非商标的</td>
+</tr>
+<tr>
+<td style="text-align:left">paranoid</td>
+<td style="text-align:left">adj. 类似妄想狂的；属于偏执狂的</td>
+</tr>
+<tr>
+<td style="text-align:left">degenerate</td>
+<td style="text-align:left">adj. 退化的；堕落的</td>
+</tr>
+<tr>
+<td style="text-align:left">offensive</td>
+<td style="text-align:left">n. 攻势；攻击</td>
+</tr>
+<tr>
+<td style="text-align:left">invariant</td>
+<td style="text-align:left">n. [数] 不变量；[计] 不变式</td>
+</tr>
+<tr>
+<td style="text-align:left">trigger</td>
+<td style="text-align:left">n. 扳机；[电子] 触发器；制滑机</td>
+</tr>
+<tr>
+<td style="text-align:left">cyclometric</td>
+<td style="text-align:left">adj. 测圆法的</td>
+</tr>
+<tr>
+<td style="text-align:left">deprecate</td>
+<td style="text-align:left">vt. 反对；抨击；轻视；声明不赞成</td>
+</tr>
+<tr>
+<td style="text-align:left">occurrences</td>
+<td style="text-align:left">n. 发生；出现；事件；发现</td>
+</tr>
+<tr>
+<td style="text-align:left">rationale</td>
+<td style="text-align:left">n. 基本原理；原理的阐述</td>
+</tr>
+<tr>
+<td style="text-align:left">underpin</td>
+<td style="text-align:left">vt. 巩固；支持；从下面支撑；加强…的基础</td>
+</tr>
+<tr>
+<td style="text-align:left">ceremony</td>
+<td style="text-align:left">n. 典礼，仪式；礼节，礼仪；客套，虚礼</td>
+</tr>
+</tbody>
+</table>
+</div><div class="cell markdown-cell"></div></div>
+  <script>document.body.onkeyup = function(e) {
+if (e.keyCode === 39) window.location.href = 'Mock Exam without answers.html';
+if (e.keyCode === 37) window.location.href = 'Slide Notes(其实就是抄课件).html';
+}</script>
+</body>
+</html>

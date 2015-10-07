@@ -1,3 +1,9 @@
+import os
+
+f = os.popen("ls");
+file_list = f.read().split("\n");
+
+print '''
 <!-- Here you can add your Google Analytics Tracking code. If you do so, do not
 forget to set the include_analytics attribute to true on the _config.yml file -->
 <script>
@@ -10,3 +16,8 @@ forget to set the include_analytics attribute to true on the _config.yml file --
   ga('send', 'pageview');
 
 </script>
+'''
+
+for one_file in file_list:
+  print '<p><a href="http://andi.ac/SEPDF/'+one_file+'">'+one_file+'</a></p>'
+
