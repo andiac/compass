@@ -1,5 +1,5 @@
 # general configuration
-url: "http://andi.ac/"
+url: ''
 baseurl: 'http://andi.ac/'
 
 # compass configuration
