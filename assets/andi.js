@@ -2,6 +2,19 @@ var endtype = function() {
   $(".typed-cursor").hide();
 };
 
+var tagline2 = function() {
+  $(".tagline2").typed({
+                      strings: ["University of Cambridge"],
+                      typeSpeed: 10,
+                      backDelay: 0,
+                      startDelay: 700,
+                      loop: false,
+                      loopCount: 1,
+                      cursorChar: "|",
+                      callback: endtype
+                    });
+};
+
 var tagline = function() {
   $(".typed-cursor").hide();
   $(".content").delay(800).fadeIn(2000);
@@ -13,17 +26,7 @@ var tagline = function() {
                       loop: false,
                       loopCount: 1,
                       cursorChar: "|",
-                      callback: endtype
-                    });
-  $(".tagline2").typed({
-                      strings: ["University of Cambridge"],
-                      typeSpeed: 10,
-                      backDelay: 0,
-                      startDelay: 700,
-                      loop: false,
-                      loopCount: 1,
-                      cursorChar: "|",
-                      callback: endtype
+                      callback: tagline2
                     });
 };
 
