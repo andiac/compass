@@ -1,6 +1,6 @@
 # general configuration
 url: ''
-baseurl: 'http://andi.ac'
+baseurl: 'https://andi.ac'
 
 # compass configuration
 compass:
