@@ -9,17 +9,27 @@ var tagline = function() {
                       strings: ["PhD Student"],
                       typeSpeed: 10,
                       backDelay: 0,
-                      startDelay: 200,
+                      startDelay: 100,
                       loop: false,
                       loopCount: 1,
                       cursorChar: "",
                       callback: endtype
                     });
   $(".tagline2").typed({
+                      strings: ["Trinity College"],
+                      typeSpeed: 10,
+                      backDelay: 0,
+                      startDelay: 300,
+                      loop: false,
+                      loopCount: 1,
+                      cursorChar: "",
+                      callback: endtype
+                    });
+  $(".tagline3").typed({
                       strings: ["University of Cambridge"],
                       typeSpeed: 10,
                       backDelay: 0,
-                      startDelay: 800,
+                      startDelay: 600,
                       loop: false,
                       loopCount: 1,
                       cursorChar: "",
