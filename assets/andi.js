@@ -12,7 +12,7 @@ var tagline = function() {
                       startDelay: 200,
                       loop: false,
                       loopCount: 1,
-                      cursorChar: "|",
+                      cursorChar: "",
                       callback: endtype
                     });
   $(".tagline2").typed({
@@ -22,7 +22,7 @@ var tagline = function() {
                       startDelay: 800,
                       loop: false,
                       loopCount: 1,
-                      cursorChar: "|",
+                      cursorChar: "",
                       callback: endtype
                     });
 };
