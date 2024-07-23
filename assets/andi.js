@@ -6,7 +6,17 @@ var tagline = function() {
   $(".typed-cursor").hide();
   $(".content").delay(800).fadeIn(2000);
   $(".tagline").typed({
-                      strings: ["PhD Candidate", "University of Cambridge"],
+                      strings: ["PhD Student"],
+                      typeSpeed: 10,
+                      backDelay: 0,
+                      startDelay: 700,
+                      loop: false,
+                      loopCount: 1,
+                      cursorChar: "|",
+                      callback: endtype
+                    });
+  $(".tagline2").typed({
+                      strings: ["University of Cambridge"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 700,
