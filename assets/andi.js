@@ -4,7 +4,7 @@ var endtype = function() {
 
 var tagline = function() {
   $(".typed-cursor").hide();
-  $(".content").delay(300).fadeIn(1000);
+  $(".content").delay(5).fadeIn(1000);
   $(".tagline").typed({
                       strings: ["PhD Student"],
                       typeSpeed: 10,
@@ -55,6 +55,6 @@ var name1 = function() {
 };
 
 $(window).load(function() {
-  $(".logo-container").delay(500).fadeIn(1000, name1);
+  $(".logo-container").delay(100).fadeIn(1000, name1);
 });
 
