@@ -148,3 +148,27 @@ footer {
 		padding: 0;
 	}
 }
+
+@media (min-width: 1050px) {
+	.wrapper {
+		width: 1050px;
+	}
+
+	header {
+		float: left;
+		width: 26%;
+		text-align: right;
+	}
+
+	.author-container h1,
+	.logo-container,
+	.tagline-container p {
+		text-align: right;
+	}
+
+	main {
+		width: 65%;
+		margin-left: 32%;
+		padding: 0;
+	}
+}
