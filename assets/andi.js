@@ -6,7 +6,7 @@ var tagline = function() {
   $(".typed-cursor").hide();
   $(".content").delay(5).fadeIn(1000);
   $(".tagline").typed({
-                      strings: ["PhD Student"],
+                      strings: ["Research Associate"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 100,
@@ -16,7 +16,7 @@ var tagline = function() {
                       callback: endtype
                     });
   $(".tagline2").typed({
-                      strings: ["Trinity College"],
+                      strings: ["Centre for AI Fundamentals"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 300,
@@ -26,7 +26,7 @@ var tagline = function() {
                       callback: endtype
                     });
   $(".tagline3").typed({
-                      strings: ["University of Cambridge"],
+                      strings: ["University of Manchester"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 600,
