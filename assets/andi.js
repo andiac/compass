@@ -6,7 +6,7 @@ var tagline = function() {
   $(".typed-cursor").hide();
   $(".content").delay(5).fadeIn(1000);
   $(".tagline").typed({
-                      strings: ["Research Associate"],
+                      strings: ["(incoming) Assistant Professor"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 100,
@@ -16,7 +16,7 @@ var tagline = function() {
                       callback: endtype
                     });
   $(".tagline2").typed({
-                      strings: ["Centre for AI Fundamentals"],
+                      strings: ["Warwick Manufacturing Group"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 300,
@@ -26,7 +26,7 @@ var tagline = function() {
                       callback: endtype
                     });
   $(".tagline3").typed({
-                      strings: ["University of Manchester"],
+                      strings: ["University of Warwick"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 600,
