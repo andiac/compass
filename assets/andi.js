@@ -6,7 +6,7 @@ var tagline = function() {
   $(".typed-cursor").hide();
   $(".content").delay(5).fadeIn(1000);
   $(".tagline").typed({
-                      strings: ["(incoming) Assistant Professor"],
+                      strings: ["Assistant Professor"],
                       typeSpeed: 10,
                       backDelay: 0,
                       startDelay: 100,
