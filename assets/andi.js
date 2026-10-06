@@ -4,7 +4,7 @@ var endtype = function() {
 
 var tagline = function() {
   $(".typed-cursor").hide();
-  $(".content").delay(5).fadeIn(1000);
+  $(".content, .social-container").delay(5).fadeIn(1000);
   $(".tagline").typed({
                       strings: ["Assistant Professor"],
                       typeSpeed: 10,
