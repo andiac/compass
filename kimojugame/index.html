@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>奇魔猪 · 巨龙迎击战</title>
+<!-- base-fix -->
+<script>
+  // 放在网站子目录里、网址末尾又没有斜杠时（例如 /games/dragon），让 ./src、./vendor 这些相对路径仍然指向游戏所在的目录
+  (function () {
+    var p = location.pathname;
+    if (location.protocol !== 'file:' && p.slice(-1) !== '/' && !/\.[A-Za-z0-9]+$/.test(p)) {
+      var b = document.createElement('base'); b.href = p + '/'; document.head.prepend(b);
+    }
+  })();
+</script>
+<!-- /base-fix -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 58'%3E%3Cellipse cx='32' cy='33' rx='28' ry='21' fill='%23f4f3ef' stroke='%231f1e1b' stroke-width='3'/%3E%3Cpath d='M32 15 L18 3 L22 3 L32 11 L42 3 L46 3 Z' fill='%23e3b12a'/%3E%3Cellipse cx='32' cy='35' rx='9' ry='6.5' fill='%23fff' stroke='%231f1e1b' stroke-width='2.5'/%3E%3C/svg%3E">
+<style>
+  :root { --pink: #ff5fae; --green: #4dff9a; --gold: #f2c14e; --red: #ff5a4e; --panel: rgba(10, 16, 22, 0.58); --line: rgba(255, 255, 255, 0.16); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #9aa5ab; color: #fff;
+    font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", system-ui, sans-serif; user-select: none; }
+  canvas#c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+  .hidden { display: none !important; }
+  button { font: inherit; cursor: pointer; }
+
+  /* ---------- HUD ---------- */
+  #hud { position: fixed; inset: 0; pointer-events: none; }
+  .bar { position: relative; height: 10px; background: rgba(0, 0, 0, 0.45); border: 1px solid var(--line); overflow: hidden; }
+  .bar .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; transition: width 0.08s linear; }
+  #boss { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: min(760px, 72vw); }
+  .boss-top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 5px; text-shadow: 0 1px 3px #000a; }
+  .boss-name { font-size: 20px; font-weight: 700; letter-spacing: 2px; }
+  #boss-phase { font-size: 13px; color: var(--green); letter-spacing: 1px; }
+  #boss-phase.rage { color: #b6ffcf; animation: pulse 0.6s infinite alternate; }
+  .boss-bar { height: 14px; clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
+  #boss-lag { background: rgba(255, 255, 255, 0.55); transition: none; }
+  #boss-hp { background: linear-gradient(90deg, #1fbf6a, #6dffae); box-shadow: 0 0 12px #3dff8a88; }
+  .boss-bar i { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(0, 0, 0, 0.6); }
+  .parts { display: flex; gap: 8px; margin-top: 6px; }
+  .chip { --hp: 100%; position: relative; font-size: 12px; padding: 3px 10px 5px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; }
+  .chip::after { content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: var(--hp); background: var(--gold); }
+  .chip.broken { color: #888; text-decoration: line-through; }
+  .chip.broken::after { display: none; }
+  .chip.active { border-color: var(--green); color: var(--green); }
+  #warn { position: absolute; top: 108px; left: 50%; transform: translateX(-50%); padding: 6px 18px; font-size: 16px; font-weight: 700; letter-spacing: 1px;
+    background: rgba(0, 30, 12, 0.6); border: 1px solid var(--green); color: var(--green); opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+  #warn.on { opacity: 1; animation: pulse 0.45s infinite alternate; }
+  #interrupt { position: absolute; top: 146px; left: 50%; transform: translateX(-50%); width: 260px; opacity: 0; transition: opacity 0.2s; text-align: center; font-size: 12px; }
+  #interrupt.on { opacity: 1; }
+  #interrupt .bar { height: 7px; margin-top: 3px; }
+  #int-fill { background: var(--gold); width: 0; }
+
+  #player { position: absolute; left: 22px; bottom: 22px; display: flex; gap: 12px; align-items: flex-end; padding: 12px 16px 12px 12px; background: var(--panel); border: 1px solid var(--line);
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+  #player svg { width: 66px; height: 58px; flex: none; filter: drop-shadow(0 2px 3px #0008); }
+  .pname { font-size: 13px; letter-spacing: 1px; margin-bottom: 6px; color: #ffd3ea; }
+  .row { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 12px; }
+  .row .lbl { width: 56px; color: #cfd8de; }
+  .row .bar { width: 210px; }
+  #hp-fill { background: linear-gradient(90deg, #ff4f9c, #ff9ccc); }
+  #hp-fill.low { background: var(--red); animation: pulse 0.4s infinite alternate; }
+  #hp-num { font-weight: 700; font-size: 16px; min-width: 44px; text-align: right; }
+  #boost-fill { background: linear-gradient(90deg, #4aa8ff, #b6e2ff); }
+  #boost-bar.overheat #boost-fill { background: var(--red); }
+  #sp-fill { background: linear-gradient(90deg, #c98a1e, var(--gold)); }
+  #sp-bar.full { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
+  #sp-key { font-weight: 700; color: var(--gold); opacity: 0.35; }
+  #sp-bar.full + #sp-key { opacity: 1; animation: pulse 0.5s infinite alternate; }
+
+  #weapons { position: absolute; right: 22px; bottom: 22px; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .wpn { font-size: 13px; padding: 5px 12px; background: var(--panel); border: 1px solid var(--line); display: flex; align-items: center; gap: 8px; min-width: 210px; justify-content: flex-end; }
+  .wpn .k { font-size: 11px; color: #9fb0ba; border: 1px solid #ffffff30; padding: 0 5px; }
+  .wpn.on { border-color: var(--pink); color: #ffd3ea; }
+  .wpn.cd { color: #8a949a; }
+  #ammo { display: inline-flex; gap: 2px; }
+  #ammo i { width: 4px; height: 12px; background: #ffffff25; display: block; }
+  #ammo i.on { background: var(--pink); box-shadow: 0 0 4px var(--pink); }
+
+  #crosshair { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; transform: translate(-50%, -50%); border: 2px solid rgba(255, 140, 200, 0.85); border-radius: 50%; }
+  #crosshair i { position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px; background: #fff; border-radius: 50%; }
+  #crosshair.locked { border-color: rgba(255, 255, 255, 0.35); }
+  #hitmark { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; transform: translate(-50%, -50%) rotate(45deg); opacity: 0; transition: opacity 0.05s;
+    background: linear-gradient(#fff, #fff) center/2px 12px no-repeat, linear-gradient(#fff, #fff) center/12px 2px no-repeat; }
+  #hitmark.weak { background: linear-gradient(var(--gold), var(--gold)) center/3px 16px no-repeat, linear-gradient(var(--gold), var(--gold)) center/16px 3px no-repeat; }
+  #lock { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border: 2px solid var(--pink); opacity: 0; box-shadow: 0 0 10px #ff5fae88; }
+  #lock.on { opacity: 1; }
+  #lock-label { position: absolute; left: 50%; top: 50%; transform: translate(20px, -40px) rotate(-45deg); white-space: nowrap; font-size: 12px; color: var(--pink); text-shadow: 0 1px 2px #000; }
+  #threats .threat { position: absolute; left: 0; top: 0; display: none; color: var(--red); font-size: 26px; text-shadow: 0 0 6px #000, 0 0 10px var(--red); }
+  #toasts { position: absolute; top: 28%; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .toast { font-size: 22px; font-weight: 700; letter-spacing: 2px; text-shadow: 0 2px 6px #000c; transition: opacity 0.4s, transform 0.4s; animation: pop 0.25s ease-out; white-space: nowrap; }
+  .toast.pink { color: #ffc2e2; } .toast.gold { color: var(--gold); } .toast.green { color: var(--green); } .toast.warn { color: #ffb08a; font-size: 18px; } .toast.red { color: #ff8a6a; }
+  .toast.out { opacity: 0; transform: translateY(-10px); }
+  .dnum { position: absolute; left: 0; top: 0; font-size: 15px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px #000; opacity: 0; }
+  .dnum.weak { color: var(--gold); font-size: 19px; }
+  #vignette { position: absolute; inset: 0; opacity: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(255, 30, 60, 0.55) 100%); }
+  #keys-hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #ffffffb0; text-shadow: 0 1px 2px #000; white-space: nowrap; }
+  #bosscard { position: fixed; right: 7vw; bottom: 16vh; text-align: right; opacity: 0; transition: opacity 0.5s, transform 0.5s; transform: translateX(30px); pointer-events: none; }
+  #bosscard.on { opacity: 1; transform: none; }
+  #bosscard .n { font-size: 54px; font-weight: 800; letter-spacing: 6px; text-shadow: 0 3px 12px #000c; }
+  #bosscard .s { font-size: 16px; color: var(--green); letter-spacing: 3px; margin-top: 4px; text-shadow: 0 1px 4px #000; }
+  #bosscard .l { height: 2px; background: linear-gradient(90deg, transparent, var(--green)); margin-top: 8px; }
+  #fps { position: fixed; top: 6px; right: 8px; font-size: 12px; color: #fff; text-shadow: 0 1px 2px #000; pointer-events: none; }
+
+  /* ---------- 标题 / 暂停 / 结算 ---------- */
+  .overlay { position: fixed; inset: 0; display: flex; }
+  #title { background: linear-gradient(90deg, rgba(14, 20, 26, 0.88) 0%, rgba(14, 20, 26, 0.65) 38%, rgba(14, 20, 26, 0) 70%); }
+  .title-inner { padding: 6vh 0 0 6vw; max-width: 640px; }
+  .kicker { font-size: 13px; letter-spacing: 4px; color: var(--pink); }
+  h1 { font-size: 50px; margin: 8px 0 4px; letter-spacing: 5px; text-shadow: 0 4px 18px #000a; white-space: nowrap; }
+  h1 small { display: block; font-size: 18px; letter-spacing: 3px; color: #cfd8de; font-weight: 400; margin-top: 8px; }
+  .desc { font-size: 14px; line-height: 1.8; color: #dfe6ea; margin: 16px 0 20px; }
+  .big { background: linear-gradient(90deg, #ff4f9c, #ff8cc4); border: none; color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 4px; padding: 12px 42px;
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); box-shadow: 0 6px 20px #ff4f9c55; }
+  .big:hover { filter: brightness(1.1); }
+  .opts { display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0 16px; font-size: 13px; align-items: center; }
+  .seg { display: inline-flex; border: 1px solid var(--line); }
+  .seg button { background: rgba(0, 0, 0, 0.3); color: #cfd8de; border: none; padding: 5px 12px; }
+  .seg button.sel { background: rgba(255, 95, 174, 0.75); color: #fff; }
+  .ghost { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--line); color: #dfe6ea; padding: 5px 12px; }
+  .keys { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; color: #dfe6ea; background: rgba(0, 0, 0, 0.28); padding: 12px 16px; border: 1px solid var(--line); max-width: 520px; }
+  .keys b { color: #fff; font-weight: 700; white-space: nowrap; }
+  .tips { font-size: 12px; color: #aab7bf; margin-top: 12px; line-height: 1.7; max-width: 540px; }
+  #pause, #result { background: rgba(10, 14, 18, 0.72); align-items: center; justify-content: center; }
+  .card { background: rgba(16, 22, 28, 0.92); border: 1px solid var(--line); padding: 30px 40px; min-width: 420px; text-align: center; clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px)); }
+  .card h2 { margin: 0 0 6px; font-size: 40px; letter-spacing: 8px; }
+  .card h2.win { color: var(--gold); } .card h2.lose { color: #ff8a9a; }
+  .card .sub { color: #cfd8de; margin-bottom: 18px; }
+  .card .btns { display: flex; gap: 12px; justify-content: center; margin-top: 22px; }
+  #result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; text-align: left; font-size: 15px; }
+  #result-stats div { display: flex; justify-content: space-between; border-bottom: 1px solid #ffffff14; padding: 4px 0; }
+  #result-stats span { color: #aab7bf; }
+  #result-stats .rank { grid-column: 1 / -1; justify-content: center; gap: 16px; border: none; margin-top: 8px; }
+  #result-stats .rank b { font-size: 46px; color: var(--gold); line-height: 1; }
+  #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #1a2026; gap: 12px; }
+  #loading .t { font-size: 26px; letter-spacing: 6px; }
+  #loading-msg { color: #aab7bf; font-size: 14px; max-width: 80vw; text-align: center; line-height: 1.7; }
+  @keyframes pulse { from { opacity: 1; } to { opacity: 0.55; } }
+  @keyframes pop { from { transform: scale(1.3); opacity: 0; } to { transform: none; opacity: 1; } }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.min.js",
+    "three/addons/": "./vendor/three/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="boss">
+    <div class="boss-top"><span class="boss-name">巨龙形 MA</span><span id="boss-phase">第一阶段</span></div>
+    <div class="bar boss-bar"><div class="fill" id="boss-lag"></div><div class="fill" id="boss-hp"></div><i style="left:60%"></i><i style="left:30%"></i></div>
+    <div class="parts">
+      <span class="chip" id="chip-bayL">左翼导弹舱</span>
+      <span class="chip" id="chip-bayR">右翼导弹舱</span>
+      <span class="chip" id="chip-fn">浮游炮 <b id="fn-count">12</b> / 12</span>
+    </div>
+  </div>
+  <div id="warn"></div>
+  <div id="interrupt"><div>打断主炮</div><div class="bar"><div class="fill" id="int-fill"></div></div></div>
+
+  <div id="player">
+    <svg viewBox="0 0 64 58" aria-hidden="true">
+      <path d="M13 17 L16 6 L25 12 Z M51 17 L48 6 L39 12 Z" fill="#f4f3ef" stroke="#1f1e1b" stroke-width="1.6" stroke-linejoin="round"/>
+      <ellipse cx="32" cy="33" rx="28" ry="21" fill="#f4f3ef" stroke="#1f1e1b" stroke-width="1.8"/>
+      <path d="M32 15 L18 3 L22 3 L32 11 L42 3 L46 3 Z" fill="#e3b12a" stroke="#8a6a12" stroke-width="0.8"/>
+      <circle cx="32" cy="13" r="2.2" fill="#d0201e"/>
+      <circle cx="26.2" cy="27.3" r="1.25" fill="#1f1e1b"/><circle cx="37.8" cy="27.3" r="1.25" fill="#1f1e1b"/>
+      <ellipse cx="32" cy="35" rx="8.6" ry="6.2" fill="#fff" stroke="#1f1e1b" stroke-width="1.7"/>
+      <ellipse cx="28.9" cy="35.1" rx="1.9" ry="2.6" fill="none" stroke="#1f1e1b" stroke-width="1.3"/>
+      <ellipse cx="35.1" cy="35.1" rx="1.9" ry="2.6" fill="none" stroke="#1f1e1b" stroke-width="1.3"/>
+    </svg>
+    <div class="pinfo">
+      <div class="pname">3D 元祖高达奇魔猪</div>
+      <div class="row"><span class="lbl">装甲</span><div class="bar"><div class="fill" id="hp-fill"></div></div><span id="hp-num">1000</span></div>
+      <div class="row"><span class="lbl">推进</span><div class="bar" id="boost-bar"><div class="fill" id="boost-fill"></div></div></div>
+      <div class="row"><span class="lbl">最后射击</span><div class="bar" id="sp-bar"><div class="fill" id="sp-fill"></div></div><span id="sp-key">R</span></div>
+    </div>
+  </div>
+
+  <div id="weapons">
+    <div class="wpn" id="w-rifle"><span class="k">左键</span>光束步枪 <span id="ammo"></span></div>
+    <div class="wpn" id="w-saber"><span class="k">F</span>光束剑 · 三段斩</div>
+    <div class="wpn" id="w-shield"><span class="k">右键</span>盾牌</div>
+    <div class="wpn" id="w-bz"><span class="k">Q</span>超级火箭筒 <span id="bz-cd">就绪</span></div>
+  </div>
+
+  <div id="crosshair"><i></i></div>
+  <div id="hitmark"></div>
+  <div id="lock"><span id="lock-label"></span></div>
+  <div id="threats"></div>
+  <div id="dmgnums"></div>
+  <div id="toasts"></div>
+  <div id="vignette"></div>
+  <div id="keys-hint">WASD 移动 · 空格 跳 / 按住上升 · Shift 冲刺闪避 · 左键 光束步枪 · 右键 盾牌 · F 光束剑 · Q 火箭筒 · Tab 锁定 · R 最后射击 · Esc 暂停</div>
+</div>
+
+<div id="bosscard"><div class="n">巨龙形 MA</div><div class="s">高能光束主炮 · 翼载导弹舱 · 浮游炮 ×12</div><div class="l"></div></div>
+
+<div id="title" class="overlay hidden">
+  <div class="title-inner">
+    <div class="kicker">小猫骑士 外传 · 3D 网页游戏 DEMO</div>
+    <h1>奇魔猪 · 巨龙迎击战<small>3D 元祖高达奇魔猪 vs 巨龙形 MA</small></h1>
+    <div class="desc">狂风吹过起雾的高地草原，雾里站着一架四足的机械巨龙。<br>
+      操作 3D 元祖高达奇魔猪迎击它：打碎翅膀上的导弹舱、击落背上飞出的浮游炮，<br>
+      趁主炮蓄能时射击发光的炮口打断它——攒满能量后，用「最后射击」了结战斗。</div>
+    <button class="big" id="btn-start">开始战斗</button>
+    <div class="opts">
+      <span>难度</span><span class="seg"><button data-d="normal">普通</button><button data-d="hard">困难</button></span>
+      <span>画质</span><span class="seg"><button data-q="low">低</button><button data-q="mid">中</button><button data-q="high">高</button></span>
+      <button class="ghost" id="btn-sound">音效：开</button>
+    </div>
+    <div class="keys">
+      <b>WASD / 鼠标</b><span>移动 / 转动视角（滚轮拉远拉近）</span>
+      <b>空格</b><span>跳跃，空中按住 = 背包推进上升（消耗推进槽）</span>
+      <b>Shift</b><span>冲刺闪避，冲刺的一瞬间无敌</span>
+      <b>左键</b><span>光束步枪（粉红光弹，可以打掉导弹和浮游炮）</span>
+      <b>右键（按住）</b><span>举盾，挡住正面的光束、导弹和爪击</span>
+      <b>F</b><span>光束剑三段斩（连按），会冲向附近的目标</span>
+      <b>Q</b><span>超级火箭筒（范围爆炸，适合打导弹舱）</span>
+      <b>Tab / 中键</b><span>锁定：头部、躯干、导弹舱、浮游炮</span>
+      <b>R</b><span>招牌动作「最后射击」（能量槽满时）</span>
+      <b>Esc / M</b><span>暂停 / 静音</span>
+    </div>
+    <div class="tips">点「开始战斗」后鼠标会被锁定用来转视角，按 Esc 暂停。如果浏览器不允许锁定鼠标，按住任意鼠标键拖动也可以转视角，方向键也行。<br>
+      画质卡的话选「低」；按 P 显示帧率。只有和画面同步的音效，没有背景音乐。</div>
+  </div>
+</div>
+
+<div id="pause" class="overlay hidden">
+  <div class="card">
+    <h2>暂停</h2>
+    <div class="sub">点「继续」回到战斗（鼠标会重新锁定）</div>
+    <div class="btns"><button class="big" id="btn-resume">继续</button><button class="ghost" id="btn-restart">重新开始</button><button class="ghost" id="btn-title">回到标题</button></div>
+  </div>
+</div>
+
+<div id="result" class="overlay hidden">
+  <div class="card">
+    <h2 id="result-title">讨伐成功</h2>
+    <div class="sub" id="result-sub"></div>
+    <div id="result-stats"></div>
+    <div class="btns"><button class="big" id="btn-retry">再战一次</button><button class="ghost" id="btn-result-title">回到标题</button></div>
+  </div>
+</div>
+
+<div id="loading"><div class="t">奇魔猪 · 巨龙迎击战</div><div id="loading-msg">加载中…</div></div>
+<div id="fps" class="hidden"></div>
+
+<script>
+  if (location.protocol === 'file:') {
+    document.getElementById('loading-msg').innerHTML = '浏览器不允许直接双击打开模块化的网页。<br>本地玩请双击项目文件夹里的 <b>启动游戏.bat</b>（会开一个本地服务器并自动打开浏览器）；<br>部署到网站上以后，直接访问网址就行。';
+  }
+</script>
+<script type="module">import './src/main.js';</script>
+</body>
+</html>
